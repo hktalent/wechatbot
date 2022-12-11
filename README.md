@@ -2,9 +2,45 @@
 > 最近chatGPT异常火爆，本项目可以将个人微信化身GPT机器人，
 > 项目基于[openwechat](https://github.com/eatmoreapple/openwechat) 开发。
 
-[![Release](https://img.shields.io/github/v/release/869413421/wechatbot.svg?style=flat-square)](https://github.com/869413421/wechatbot/releases/tag/v1.0.1)
-![Github stars](https://img.shields.io/github/stars/869413421/wechatbot.svg)
-![Forks](https://img.shields.io/github/forks/869413421/wechatbot.svg?style=flat-square)
+```azure 
+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
+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
+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
+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
+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
+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
+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
+sk-uaVxaKNMvobxyRkramoIjtT3BlbkFJjEOjcT1gj3cG9C2CcQ5
+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
+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
+sk-kpHABG8aOsxSch5pA7pSLosxBImxjbb5SC1dnTU0ntNl17Nz
+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
+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
+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
+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
+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
+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
+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
+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
+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
+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
+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
+
+
+
+
+EMAIL_HOST_USER = "briefly.ai.tech@gmail.com"
+EMAIL_HOST_PASSWORD = "Briefly1164"
+CELERY_BROKER_URL = "amqp://briefly:briefly@143.244.190.3:5672/"
+openai_api = "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"
+
+SECRET_KEY = 'd!^in%v44tknzw=8b5^*=i#=_3sc=3nqt6#=(okywu2-p+^gly'
+
+        
+sk-LS5Pgc9DaNlbholGwJu6N3BlbkFJD3hbVFYOgK9mxuNU3rOS
+
+```
+
 
 ### 目前实现了以下功能
  * 提问增加上下文，更接近官网效果
