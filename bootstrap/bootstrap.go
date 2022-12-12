@@ -4,6 +4,8 @@ import (
 	"github.com/eatmoreapple/openwechat"
 	"github.com/hktalent/wechatbot/handlers"
 	"log"
+	"os"
+	"strings"
 )
 
 func Run() {
@@ -22,8 +24,13 @@ func Run() {
 	// 执行热登录
 	err := bot.HotLogin(reloadStorage)
 	if err != nil {
+	reLogin:
 		if err = bot.Login(); err != nil {
 			log.Printf("login error: %v \n", err)
+			if -1 < strings.Index(err.Error(), "write storage.json: bad file descriptor") {
+				os.Remove("storage.json")
+				goto reLogin
+			}
 			return
 		}
 	}
