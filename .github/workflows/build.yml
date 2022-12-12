@@ -49,7 +49,7 @@ jobs:
       - name: Install Dependences
         run: |
           sudo apt install -yy --fix-missing libpcap-dev upx
-          go mod vendor
+#          go mod vendor
 #          git submodule update --init --recursive --remote
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
