@@ -1,0 +1,51 @@
+CVE-\d{4}-\d{3,}
+Deserialization
+Impact
+POC
+Proof Of Concept
+RCE
+Remote Code Execution
+Remote Command Execution
+SSRF
+Security fixes
+XSS
+XXE
+arbitrary execution
+arbitrary file overwrite
+attacker
+blacklist
+bypass
+code execution
+code injection
+command injection
+content injection
+cross site
+cross-site
+cve
+denial of service
+deserialize
+directory traversal
+expression injection
+hijacking
+inject
+path traversal
+permissions
+rce
+redos
+sandbox escape
+security
+server-side request forgery
+sql
+sql injection
+sqli
+ssrf
+verification
+vulnerabilities
+vulnerability
+vulnerable
+xml external entity
+注入
+漏洞
+代码执行
+反序列化
+命令执行

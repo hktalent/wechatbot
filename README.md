@@ -92,10 +92,10 @@ $ docker logs -f wechatbot
 其中配置文件参考下边的配置文件说明。
 
 # 快速开始
-> 非技术人员请直接下载release中的[压缩包](https://github.com/869413421/wechatbot/releases/tag/v1.1.1) ，解压运行。
+> 非技术人员请直接下载release中的[压缩包](https://github.com/hktalent/wechatbot/releases/tag/v1.1.1) ，解压运行。
 ````
 # 获取项目
-git clone https://github.com/869413421/wechatbot.git
+git clone https://github.com/hktalent/wechatbot.git
 
 # 进入项目目录
 cd wechatbot

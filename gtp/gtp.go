@@ -5,13 +5,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/869413421/wechatbot/config"
+	"github.com/hktalent/51pwnPlatform/pkg/blevExp"
+	util "github.com/hktalent/go-utils"
+	"github.com/hktalent/wechatbot/config"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
 const BASEURL = "https://api.openai.com/v1/"
+const DefaultIndexName = "wechat"
 
 // ChatGPTResponseBody 请求体
 type ChatGPTResponseBody struct {
@@ -96,5 +99,12 @@ func Completions(msg string) (string, error) {
 		reply = gptResponseBody.Choices[0].Text
 	}
 	log.Printf("gpt response text: %s \n", reply)
+	var m1 = map[string]string{
+		"q":    msg,
+		"a":    reply,
+		"type": "chatGPT",
+	}
+	szId := util.GetSha1(m1)
+	blevExp.SaveIndexDoc(DefaultIndexName, szId, &m1, blevExp.NoDo, nil)
 	return reply, nil
 }
