@@ -13,6 +13,7 @@ func main() {
 	os.MkdirAll("data", os.ModePerm)
 	blevExp.InitIndexDb()
 	blevExp.CreateIndex(gtp.DefaultIndexName, `{"default_mapping":{"enabled":true,"display_order":"0"},"type_field":"_type","default_type":"_default","default_analyzer":"standard","default_datetime_parser":"dateTimeOptional","default_field":"_all","byte_array_converter":"json","store_dynamic":true,"index_dynamic":true}`)
+	//os.Remove("storage.json")
 	bootstrap.Run()
 	util.Wg.Wait()
 	util.CloseAll()
