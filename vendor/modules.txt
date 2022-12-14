@@ -471,7 +471,7 @@ github.com/hktalent/colly
 github.com/hktalent/colly/debug
 github.com/hktalent/colly/extensions
 github.com/hktalent/colly/storage
-# github.com/hktalent/go-utils v0.0.0-20221208165130-12e65a9de5a6
+# github.com/hktalent/go-utils v0.0.0-20221214033852-7ab8f73f449f
 ## explicit; go 1.18
 github.com/hktalent/go-utils
 # github.com/hktalent/goxml2json v0.0.0-20221020101014-f91e9a0121fc

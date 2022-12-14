@@ -591,8 +591,7 @@ func RemoveDuplication_map(arr []string) []string {
 	set := make(map[string]struct{}, len(arr))
 	j := 0
 	for _, v := range arr {
-		_, ok := set[v]
-		if ok {
+		if _, ok := set[v]; ok {
 			continue
 		}
 		set[v] = struct{}{}
@@ -601,4 +600,21 @@ func RemoveDuplication_map(arr []string) []string {
 	}
 
 	return arr[:j]
+}
+
+func RemoveDuplication_map4Any(arr []interface{}) []interface{} {
+	set := make(map[string]struct{}, len(arr))
+	j := 0
+	var aR = make([]interface{}, len(arr))
+	for _, v1 := range arr {
+		v := fmt.Sprintf("%v", v1)
+		if _, ok := set[v]; ok {
+			continue
+		}
+		set[v] = struct{}{}
+		aR[j] = v1
+		j++
+	}
+
+	return aR[:j]
 }
