@@ -3,8 +3,10 @@ package handlers
 import (
 	"fmt"
 	"github.com/eatmoreapple/openwechat"
+	"github.com/hktalent/51pwnPlatform/pkg/blevExp"
 	util "github.com/hktalent/go-utils"
 	"github.com/hktalent/wechatbot/config"
+	"github.com/hktalent/wechatbot/gtp"
 	"github.com/hktalent/wechatbot/service"
 	"github.com/skip2/go-qrcode"
 	"log"
@@ -55,6 +57,13 @@ func init() {
 
 // Handler 全局处理入口
 func Handler(msg *openwechat.Message) {
+	// 相同的问题就不回答，避免两个AI相互、死循环
+	if util.GetValAsBool("CheckRpt") {
+		xx := blevExp.Query4KeyFrom(gtp.DefaultIndexName, fmt.Sprintf("q:\"%s\"", msg.Content), uint64(0), uint64(2))
+		if 0 < xx.Total && fmt.Sprintf("%v", xx.Hits[0].Fields["q"]) == msg.Content {
+			return
+		}
+	}
 	log.Printf("hadler Received msg : %v", msg.Content)
 	// 处理群消息
 	if msg.IsSendByGroup() {
