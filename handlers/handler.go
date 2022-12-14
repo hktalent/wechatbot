@@ -40,7 +40,7 @@ func QrCodeCallBack(uuid string) {
 var handlers map[HandlerType]MessageHandlerInterface
 var UserService service.UserServiceInterface
 
-var EanbleGroup = true
+var EanbleGroup = false
 
 func init() {
 	util.RegInitFunc(func() {
@@ -57,8 +57,10 @@ func init() {
 func Handler(msg *openwechat.Message) {
 	log.Printf("hadler Received msg : %v", msg.Content)
 	// 处理群消息
-	if EanbleGroup && msg.IsSendByGroup() {
-		handlers[GroupHandler].handle(msg)
+	if msg.IsSendByGroup() {
+		if EanbleGroup {
+			handlers[GroupHandler].handle(msg)
+		}
 		return
 	}
 
