@@ -320,8 +320,6 @@ github.com/hktalent/bleve-mapping-ui v0.4.1 h1:oLpvSAhfQIFW6zQok5nYdQzSSwBsU17Ki
 github.com/hktalent/bleve-mapping-ui v0.4.1/go.mod h1:EnSNC/4MpgnuzdLchG0VqTfkLLpE9ird/0R0zN3A/o4=
 github.com/hktalent/colly v1.2.1-0.20221117074447-1904ff73d00a h1:303QWp7PT1k5F47o2yqKF6thveMTVy46QuCqcaUpNIo=
 github.com/hktalent/colly v1.2.1-0.20221117074447-1904ff73d00a/go.mod h1:LWcYHwH7v2m6FUYO+E0R6hgRkldwXXQvfT5qzHZqI58=
-github.com/hktalent/go-utils v0.0.0-20221208165130-12e65a9de5a6 h1:6uFU2WOAPMlkDtJHLAS34QnHoppTURGBgjAlm5H1mNI=
-github.com/hktalent/go-utils v0.0.0-20221208165130-12e65a9de5a6/go.mod h1:IiEjxa9gnCF9wGdq6Iy6O7RRzkdLD+W+aRMlCCbI+/E=
 github.com/hktalent/go-utils v0.0.0-20221214033852-7ab8f73f449f h1:8vl3RDhx1kQV2YMSF6VVg7QV3IWL/cGh6Hnm+Zq4zA8=
 github.com/hktalent/go-utils v0.0.0-20221214033852-7ab8f73f449f/go.mod h1:IiEjxa9gnCF9wGdq6Iy6O7RRzkdLD+W+aRMlCCbI+/E=
 github.com/hktalent/goxml2json v0.0.0-20221020101014-f91e9a0121fc h1:xCfbmpT1Qgmcm6p/qtlv6wt4CyPvOCLV3/PjfKXXdsI=
