@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/eatmoreapple/openwechat v1.2.1
 	github.com/hktalent/51pwnPlatform v0.0.0-20221211154706-d719fe891dd2
-	github.com/hktalent/go-utils v0.0.0-20221208165130-12e65a9de5a6
+	github.com/hktalent/go-utils v0.0.0-20221214033852-7ab8f73f449f
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 )

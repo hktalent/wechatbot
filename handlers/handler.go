@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"github.com/eatmoreapple/openwechat"
+	util "github.com/hktalent/go-utils"
 	"github.com/hktalent/wechatbot/config"
 	"github.com/hktalent/wechatbot/service"
 	"github.com/skip2/go-qrcode"
@@ -39,18 +40,24 @@ func QrCodeCallBack(uuid string) {
 var handlers map[HandlerType]MessageHandlerInterface
 var UserService service.UserServiceInterface
 
+var EanbleGroup = true
+
 func init() {
-	handlers = make(map[HandlerType]MessageHandlerInterface)
-	handlers[GroupHandler] = NewGroupMessageHandler()
-	handlers[UserHandler] = NewUserMessageHandler()
-	UserService = service.NewUserService()
+	util.RegInitFunc(func() {
+		handlers = make(map[HandlerType]MessageHandlerInterface)
+		handlers[GroupHandler] = NewGroupMessageHandler()
+		handlers[UserHandler] = NewUserMessageHandler()
+		UserService = service.NewUserService()
+		EanbleGroup = util.GetValAsBool("EanbleGroup")
+	})
+
 }
 
 // Handler 全局处理入口
 func Handler(msg *openwechat.Message) {
 	log.Printf("hadler Received msg : %v", msg.Content)
 	// 处理群消息
-	if msg.IsSendByGroup() {
+	if EanbleGroup && msg.IsSendByGroup() {
 		handlers[GroupHandler].handle(msg)
 		return
 	}
@@ -58,7 +65,7 @@ func Handler(msg *openwechat.Message) {
 	// 好友申请
 	if msg.IsFriendAdd() {
 		if config.LoadConfig().AutoPass {
-			_, err := msg.Agree("你好我是基于chatGPT引擎开发的微信机器人，你可以向我提问任何问题。")
+			_, err := msg.Agree("???")
 			if err != nil {
 				log.Fatalf("add friend agree error : %v", err)
 				return
