@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"regexp"
 )
 
 const BASEURL = "https://api.openai.com/v1/"
@@ -43,6 +44,8 @@ type ChatGPTRequestBody struct {
 	FrequencyPenalty int     `json:"frequency_penalty"`
 	PresencePenalty  int     `json:"presence_penalty"`
 }
+
+var Trimhd = regexp.MustCompile(`^[\s\r\n\t ]*\?[\s\r\n\t ]*`)
 
 // Completions gtp文本模型回复
 //curl https://api.openai.com/v1/completions
@@ -99,6 +102,7 @@ func Completions(msg string) (string, error) {
 		reply = gptResponseBody.Choices[0].Text
 	}
 	log.Printf("gpt response text: %s \n", reply)
+	reply = Trimhd.ReplaceAllString(reply, "")
 	var m1 = map[string]string{
 		"q":    msg,
 		"a":    reply,
