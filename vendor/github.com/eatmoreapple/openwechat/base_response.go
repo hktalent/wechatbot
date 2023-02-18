@@ -1,11 +1,11 @@
 package openwechat
 
-import "errors"
-
 type Ret int
 
 const (
 	ticketError         Ret = -14  // ticket error
+	logicError          Ret = -2   // logic error
+	sysError            Ret = -1   // sys error
 	paramError          Ret = 1    // param error
 	failedLoginWarn     Ret = 1100 // failed login warn
 	failedLoginCheck    Ret = 1101 // failed login check
@@ -28,5 +28,5 @@ func (b BaseResponse) Err() error {
 	if b.Ok() {
 		return nil
 	}
-	return errors.New(b.Ret.String())
+	return b.Ret
 }

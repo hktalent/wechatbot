@@ -48,10 +48,10 @@ type ChatGPTRequestBody struct {
 var Trimhd = regexp.MustCompile(`^[\s\r\n\t ]*\?[\s\r\n\t ]*`)
 
 // Completions gtp文本模型回复
-//curl https://api.openai.com/v1/completions
-//-H "Content-Type: application/json"
-//-H "Authorization: Bearer your chatGPT key"
-//-d '{"model": "text-davinci-003", "prompt": "give me good song", "temperature": 0, "max_tokens": 7}'
+// curl https://api.openai.com/v1/completions
+// -H "Content-Type: application/json"
+// -H "Authorization: Bearer your chatGPT key"
+// -d '{"model": "text-davinci-003", "prompt": "give me good song", "temperature": 0, "max_tokens": 7}'
 func Completions(msg string) (string, error) {
 	requestBody := ChatGPTRequestBody{
 		Model:            "text-davinci-003",
@@ -67,6 +67,7 @@ func Completions(msg string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	// https://platform.openai.com/docs/api-reference/making-requests
 	log.Printf("request gtp json string : %v", string(requestData))
 	req, err := http.NewRequest("POST", BASEURL+"completions", bytes.NewBuffer(requestData))
 	if err != nil {
@@ -76,22 +77,29 @@ func Completions(msg string) (string, error) {
 	apiKey := config.LoadConfig().ApiKey
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+apiKey)
+	req.Header.Set("OpenAI-Organization", util.GetVal("org"))
+
 	client := &http.Client{}
 	response, err := client.Do(req)
 	if err != nil {
 		return "", err
 	}
 	defer response.Body.Close()
+	var body []byte
+	body, err = ioutil.ReadAll(response.Body)
 	if response.StatusCode != 200 {
-		return "", errors.New(fmt.Sprintf("gtp api status code not equals 200,code is %d", response.StatusCode))
+		s1 := ""
+		if nil == err {
+			s1 = string(body)
+		}
+		return s1, errors.New(fmt.Sprintf("gtp api status code not equals 200,code is %d", response.StatusCode))
 	}
-	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
 
 	gptResponseBody := &ChatGPTResponseBody{}
-	log.Println(string(body))
+	//log.Println(string(body))
 	err = json.Unmarshal(body, gptResponseBody)
 	if err != nil {
 		return "", err
@@ -101,7 +109,7 @@ func Completions(msg string) (string, error) {
 	if len(gptResponseBody.Choices) > 0 {
 		reply = gptResponseBody.Choices[0].Text
 	}
-	log.Printf("gpt response text: %s \n", reply)
+	log.Printf("gpt response text: %s\n%s \n", msg, reply)
 	reply = Trimhd.ReplaceAllString(reply, "")
 	var m1 = map[string]string{
 		"q":    msg,

@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/eatmoreapple/openwechat"
+	util "github.com/hktalent/go-utils"
 	"github.com/hktalent/wechatbot/gtp"
 	"log"
 	"strings"
@@ -47,7 +49,7 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	reply, err := gtp.Completions(requestText)
 	if err != nil {
 		log.Printf("gtp request error: %v \n", err)
-		msg.ReplyText("sorry,我有紧急的事忙一会，回头聊哈")
+		msg.ReplyText(util.GetVal("ErrMsg") + fmt.Sprintf("\n%v\n", err))
 		return err
 	}
 	if reply == "" {
@@ -58,9 +60,9 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	reply = strings.TrimSpace(reply)
 	reply = strings.Trim(reply, "\n")
 	UserService.SetUserSessionContext(sender.ID(), requestText, reply)
-	if EanbleGroup {
-		reply = "系统自动回复：\n" + reply
-	}
+	//if EanbleGroup {
+	//	reply = "系统自动回复：\n" + reply
+	//}
 	_, err = msg.ReplyText(reply)
 	if err != nil {
 		log.Printf("response user error: %v \n", err)

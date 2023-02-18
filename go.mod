@@ -3,7 +3,7 @@ module github.com/hktalent/wechatbot
 go 1.18
 
 require (
-	github.com/eatmoreapple/openwechat v1.2.1
+	github.com/eatmoreapple/openwechat v1.4.0
 	github.com/hktalent/51pwnPlatform v0.0.0-20221211154706-d719fe891dd2
 	github.com/hktalent/go-utils v0.0.0-20221214033852-7ab8f73f449f
 	github.com/patrickmn/go-cache v2.1.0+incompatible

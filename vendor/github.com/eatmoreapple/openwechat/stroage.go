@@ -1,11 +1,9 @@
 package openwechat
 
 import (
-	"encoding/json"
-	"errors"
 	"io"
-	"net/http"
 	"os"
+	"sync"
 )
 
 // Storage 身份信息, 维持整个登陆的Session会话
@@ -16,26 +14,33 @@ type Storage struct {
 }
 
 type HotReloadStorageItem struct {
-	Cookies      map[string][]*http.Cookie
+	Jar          *Jar
 	BaseRequest  *BaseRequest
 	LoginInfo    *LoginInfo
 	WechatDomain WechatDomain
+	SyncKey      *SyncKey
 	UUID         string
 }
 
 // HotReloadStorage 热登陆存储接口
 type HotReloadStorage io.ReadWriter
 
-// JsonFileHotReloadStorage 实现HotReloadStorage接口
-// 默认以json文件的形式存储
-type JsonFileHotReloadStorage struct {
-	FileName string
+// fileHotReloadStorage 实现HotReloadStorage接口
+// 以文件的形式存储
+type fileHotReloadStorage struct {
+	filename string
 	file     *os.File
+	lock     sync.Mutex
 }
 
-func (j *JsonFileHotReloadStorage) Read(p []byte) (n int, err error) {
+func (j *fileHotReloadStorage) Read(p []byte) (n int, err error) {
+	j.lock.Lock()
+	defer j.lock.Unlock()
 	if j.file == nil {
-		j.file, err = os.Open(j.FileName)
+		j.file, err = os.OpenFile(j.filename, os.O_RDWR, 0600)
+		if os.IsNotExist(err) {
+			return 0, ErrInvalidStorage
+		}
 		if err != nil {
 			return 0, err
 		}
@@ -43,31 +48,42 @@ func (j *JsonFileHotReloadStorage) Read(p []byte) (n int, err error) {
 	return j.file.Read(p)
 }
 
-func (j *JsonFileHotReloadStorage) Write(p []byte) (n int, err error) {
+func (j *fileHotReloadStorage) Write(p []byte) (n int, err error) {
+	j.lock.Lock()
+	defer j.lock.Unlock()
 	if j.file == nil {
-		j.file, err = os.Create(j.FileName)
+		j.file, err = os.Create(j.filename)
 		if err != nil {
 			return 0, err
 		}
 	}
+	// reset offset and truncate file
+	if _, err = j.file.Seek(0, io.SeekStart); err != nil {
+		return
+	}
+	if err = j.file.Truncate(0); err != nil {
+		return
+	}
+	// json decode only write once
 	return j.file.Write(p)
 }
 
-// NewJsonFileHotReloadStorage 创建JsonFileHotReloadStorage
-func NewJsonFileHotReloadStorage(filename string) HotReloadStorage {
-	return &JsonFileHotReloadStorage{FileName: filename}
+func (j *fileHotReloadStorage) Close() error {
+	j.lock.Lock()
+	defer j.lock.Unlock()
+	if j.file == nil {
+		return nil
+	}
+	return j.file.Close()
 }
 
-var _ HotReloadStorage = (*JsonFileHotReloadStorage)(nil)
+// Deprecated: use NewFileHotReloadStorage instead
+// 不再单纯以json的格式存储，支持了用户自定义序列化方式
+func NewJsonFileHotReloadStorage(filename string) io.ReadWriteCloser {
+	return NewFileHotReloadStorage(filename)
+}
 
-func NewHotReloadStorageItem(storage HotReloadStorage) (*HotReloadStorageItem, error) {
-	if storage == nil {
-		return nil, errors.New("storage can't be nil")
-	}
-	var item HotReloadStorageItem
-
-	if err := json.NewDecoder(storage).Decode(&item); err != nil {
-		return nil, err
-	}
-	return &item, nil
+// NewFileHotReloadStorage implements HotReloadStorage
+func NewFileHotReloadStorage(filename string) io.ReadWriteCloser {
+	return &fileHotReloadStorage{filename: filename}
 }

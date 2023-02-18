@@ -310,8 +310,8 @@ github.com/dsnet/compress/internal/prefix
 # github.com/dustin/go-humanize v1.0.0
 ## explicit
 github.com/dustin/go-humanize
-# github.com/eatmoreapple/openwechat v1.2.1
-## explicit; go 1.15
+# github.com/eatmoreapple/openwechat v1.4.0
+## explicit; go 1.18
 github.com/eatmoreapple/openwechat
 # github.com/elazarl/go-bindata-assetfs v1.0.1
 ## explicit

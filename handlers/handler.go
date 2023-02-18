@@ -42,7 +42,10 @@ func QrCodeCallBack(uuid string) {
 var handlers map[HandlerType]MessageHandlerInterface
 var UserService service.UserServiceInterface
 
-var EanbleGroup = false
+var (
+	EanbleGroup = false
+	CheckRpt    = true
+)
 
 func init() {
 	util.RegInitFunc(func() {
@@ -51,6 +54,7 @@ func init() {
 		handlers[UserHandler] = NewUserMessageHandler()
 		UserService = service.NewUserService()
 		EanbleGroup = util.GetValAsBool("EanbleGroup")
+		CheckRpt = util.GetValAsBool("CheckRpt")
 	})
 
 }
@@ -58,9 +62,9 @@ func init() {
 // Handler 全局处理入口
 func Handler(msg *openwechat.Message) {
 	// 相同的问题就不回答，避免两个AI相互、死循环
-	if util.GetValAsBool("CheckRpt") {
+	if CheckRpt {
 		xx := blevExp.Query4KeyFrom(gtp.DefaultIndexName, fmt.Sprintf("q:\"%s\"", msg.Content), uint64(0), uint64(2))
-		if 0 < xx.Total && fmt.Sprintf("%v", xx.Hits[0].Fields["q"]) == msg.Content {
+		if nil != xx && 0 < xx.Total && fmt.Sprintf("%v", xx.Hits[0].Fields["q"]) == msg.Content {
 			return
 		}
 	}

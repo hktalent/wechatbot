@@ -38,23 +38,6 @@ func GetRandomDeviceId() string {
 	return builder.String()
 }
 
-func getWebWxDataTicket(cookies []*http.Cookie) string {
-	for _, cookie := range cookies {
-		if cookie.Name == "webwx_data_ticket" {
-			return cookie.Value
-		}
-	}
-	return ""
-}
-
-func getTotalDuration(delay ...time.Duration) time.Duration {
-	var total time.Duration
-	for _, d := range delay {
-		total += d
-	}
-	return total
-}
-
 // GetFileContentType 获取文件上传的类型
 func GetFileContentType(file multipart.File) (string, error) {
 	data := make([]byte, 512)
@@ -81,9 +64,10 @@ const (
 // 微信匹配文件类型策略
 func getMessageType(filename string) string {
 	ext := getFileExt(filename)
-	if imageType[ext] {
+	if _, ok := imageType[ext]; ok {
 		return pic
-	} else if ext == videoType {
+	}
+	if ext == videoType {
 		return video
 	}
 	return doc
