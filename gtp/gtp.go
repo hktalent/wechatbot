@@ -12,6 +12,7 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"time"
 )
 
 const BASEURL = "https://api.openai.com/v1/"
@@ -69,12 +70,13 @@ func Completions(msg string) (string, error) {
 	}
 	// https://platform.openai.com/docs/api-reference/making-requests
 	log.Printf("request gtp json string : %v", string(requestData))
-	req, err := http.NewRequest("POST", BASEURL+"completions", bytes.NewBuffer(requestData))
+	req, err := http.NewRequest("POST", BASEURL+"completions?t="+fmt.Sprintf("%d", time.Now().UnixNano()), bytes.NewBuffer(requestData))
 	if err != nil {
 		return "", err
 	}
 
 	apiKey := config.LoadConfig().ApiKey
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Safari/605.1.15")
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 	req.Header.Set("OpenAI-Organization", util.GetVal("org"))
@@ -92,7 +94,7 @@ func Completions(msg string) (string, error) {
 		if nil == err {
 			s1 = string(body)
 		}
-		return s1, errors.New(fmt.Sprintf("gtp api status code not equals 200,code is %d", response.StatusCode))
+		return s1, errors.New(fmt.Sprintf("gtp api status code not equals 200,code is %d\n%s", response.StatusCode, string(body)))
 	}
 	if err != nil {
 		return "", err

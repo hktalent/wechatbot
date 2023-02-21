@@ -40,6 +40,10 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 		}
 		return nil
 	}
+	s1 := util.GetVal("UseSelf")
+	if "" != s1 && sender.NickName != s1 {
+		return nil
+	}
 
 	// 获取上下文，向GPT发起请求
 	requestText := strings.TrimSpace(msg.Content)
