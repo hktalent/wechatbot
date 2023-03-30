@@ -42,7 +42,7 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	}
 	s1 := util.GetVal("UseSelf")
 
-	if "" != s1 && (sender.NickName != s1 || msg.FromUserName != msg.ToUserName) {
+	if "" != s1 && (-1 == strings.Index(s1, sender.NickName) || msg.FromUserName != msg.ToUserName) {
 		return nil
 	}
 
