@@ -3,7 +3,7 @@ env:
 #before:
 #  hooks:
 #    - go mod tidy
-project_name: awcs
+project_name: wechatbot
 builds:
   - id: wechatbot-windows
     ldflags:
